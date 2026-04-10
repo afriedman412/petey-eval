@@ -1,0 +1,28 @@
+{
+  "benchmark_dir": "../benchmarks",
+  "data_dir": "par_decision",
+  "ground_truth": "par_ground_truth.csv",
+  "pdf_glob": "*.pdf",
+  "schema": "par_decision_schema_simple.yaml",
+  "configs": [
+    {
+      "parser": "marker",
+      "model": "gpt-5"
+    },
+    {
+      "parser": "marker",
+      "model": "gpt-5-mini"
+    },
+    {
+      "parser": "marker",
+      "model": "gpt-5.4"
+    },
+    {
+      "parser": "marker",
+      "model": "gpt-5.4-mini"
+    }
+  ],
+  "output_dir": "results",
+  "save_extractions": true,
+  "save_report": true
+}

@@ -1,0 +1,70 @@
+{
+  "benchmark_dir": "../benchmarks",
+  "data_dir": "par_decision",
+  "ground_truth": "par_ground_truth.csv",
+  "pdf_glob": "*.pdf",
+  "schema": "par_decision_schema.yaml",
+  "configs": [
+    {
+      "parser": "pymupdf",
+      "model": "gpt-4.1-mini"
+    },
+    {
+      "parser": "pymupdf",
+      "model": "gpt-4.1"
+    },
+    {
+      "parser": "pymupdf",
+      "model": "claude-sonnet-4-6"
+    },
+    {
+      "parser": "pymupdf",
+      "model": "claude-haiku-4-5"
+    },
+    {
+      "parser": "pymupdf",
+      "model": "gemini/gemini-2.5-flash"
+    },
+    {
+      "parser": "pymupdf",
+      "model": "deepseek/deepseek-chat"
+    },
+    {
+      "parser": "pymupdf",
+      "model": "fireworks_ai/accounts/fireworks/models/llama-v3p3-70b-instruct",
+      "concurrency": 3
+    },
+    {
+      "parser": "datalab",
+      "model": "gpt-4.1-mini"
+    },
+    {
+      "parser": "datalab",
+      "model": "gpt-4.1"
+    },
+    {
+      "parser": "datalab",
+      "model": "claude-sonnet-4-6"
+    },
+    {
+      "parser": "datalab",
+      "model": "claude-haiku-4-5"
+    },
+    {
+      "parser": "datalab",
+      "model": "gemini/gemini-2.5-flash"
+    },
+    {
+      "parser": "datalab",
+      "model": "deepseek/deepseek-chat"
+    },
+    {
+      "parser": "datalab",
+      "model": "fireworks_ai/accounts/fireworks/models/llama-v3p3-70b-instruct",
+      "concurrency": 3
+    }
+  ],
+  "output_dir": "results",
+  "save_extractions": true,
+  "save_report": true
+}

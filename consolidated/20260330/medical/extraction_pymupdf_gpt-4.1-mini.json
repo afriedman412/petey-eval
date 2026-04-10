@@ -1,0 +1,920 @@
+[
+  {
+    "name": "Rosario Vega",
+    "age": "27",
+    "gender": "Female",
+    "presenting_complaint_1": "weakness since the weekend",
+    "presenting_complaint_2": "facial droop",
+    "visit_outcome": "stroke pathway activated, CT head performed",
+    "_source_file": "patient_015.pdf"
+  },
+  {
+    "name": "Yara Mansour",
+    "age": "63",
+    "gender": "Female",
+    "presenting_complaint_1": "syncope",
+    "presenting_complaint_2": null,
+    "visit_outcome": "ECG and bloods normal, discharged with neurology referral",
+    "_source_file": "patient_019.pdf"
+  },
+  {
+    "name": "Tobias Grunewald",
+    "age": "67",
+    "gender": "Male",
+    "presenting_complaint_1": "jaundice",
+    "presenting_complaint_2": "abdominal pain",
+    "visit_outcome": "LFTs deranged, urgent hepatology referral, counselled regarding presentation, safety-netting advice provided",
+    "_source_file": "patient_017.pdf"
+  },
+  {
+    "name": "Carlos Esperanza",
+    "age": "24",
+    "gender": "Male",
+    "presenting_complaint_1": "panic attack",
+    "presenting_complaint_2": null,
+    "visit_outcome": "reassurance given, breathing exercises, GP follow-up",
+    "_source_file": "patient_013.pdf"
+  },
+  {
+    "name": "Gabriel Tremblay",
+    "age": "83",
+    "gender": "Male",
+    "presenting_complaint_1": "urinary retention",
+    "presenting_complaint_2": null,
+    "visit_outcome": "catheterised, urology urgent review arranged",
+    "_source_file": "patient_016.pdf"
+  },
+  {
+    "name": "Margaret Ellison",
+    "age": "34",
+    "gender": "Female",
+    "presenting_complaint_1": "shortness of breath",
+    "presenting_complaint_2": "chest tightness",
+    "visit_outcome": "discharged with salbutamol inhaler",
+    "_source_file": "patient_01.pdf"
+  },
+  {
+    "name": "Eamon O'Brien",
+    "age": "35",
+    "gender": "Male",
+    "presenting_complaint_1": "several-day history of fever",
+    "presenting_complaint_2": "rigors",
+    "visit_outcome": "blood cultures taken, broad-spectrum IV antibiotics commenced, patient given verbal and written information and advised on when to return if symptoms worsen",
+    "_source_file": "patient_018.pdf"
+  },
+  {
+    "name": "Grace Yamamoto",
+    "age": "26",
+    "gender": "Female",
+    "presenting_complaint_1": "syncope",
+    "presenting_complaint_2": null,
+    "visit_outcome": "ECG and bloods normal, discharged with neurology referral",
+    "_source_file": "patient_022.pdf"
+  },
+  {
+    "name": "Derek Okafor",
+    "age": "51",
+    "gender": "Male",
+    "presenting_complaint_1": "lower back pain",
+    "presenting_complaint_2": null,
+    "visit_outcome": "referred to orthopaedics",
+    "_source_file": "patient_02.pdf"
+  },
+  {
+    "name": "Stefan Novak",
+    "age": "32",
+    "gender": "Male",
+    "presenting_complaint_1": "rectal bleeding",
+    "presenting_complaint_2": null,
+    "visit_outcome": "PR examination performed, gastroenterology referral",
+    "_source_file": "patient_023.pdf"
+  },
+  {
+    "name": "Indigo Carvalho",
+    "age": "51",
+    "gender": "Non-binary",
+    "presenting_complaint_1": "tinnitus since the weekend",
+    "presenting_complaint_2": null,
+    "visit_outcome": "audiometry arranged, ENT referral given, verbal and written information provided, advised on when to return if symptoms worsen",
+    "_source_file": "patient_014.pdf"
+  },
+  {
+    "name": "Tamara Osei",
+    "age": "68",
+    "gender": "Female",
+    "presenting_complaint_1": "panic attack",
+    "presenting_complaint_2": null,
+    "visit_outcome": "reassurance given, breathing exercises, GP follow-up",
+    "_source_file": "patient_024.pdf"
+  },
+  {
+    "name": "Darius Kowalski",
+    "age": "29",
+    "gender": "Male",
+    "presenting_complaint_1": "cough",
+    "presenting_complaint_2": "wheeze",
+    "visit_outcome": "acute asthma, nebulisers administered, steroids prescribed",
+    "_source_file": "patient_021.pdf"
+  },
+  {
+    "name": "Oscar Henriksson",
+    "age": "32",
+    "gender": "Male",
+    "presenting_complaint_1": "ear pain",
+    "presenting_complaint_2": "discharge",
+    "visit_outcome": "otitis externa confirmed, ear drops prescribed, safety-netting advice provided",
+    "_source_file": "patient_026.pdf"
+  },
+  {
+    "name": "Priya Nambiar",
+    "age": "27",
+    "gender": "Female",
+    "presenting_complaint_1": "intermittent nausea",
+    "presenting_complaint_2": "episodes of vomiting",
+    "visit_outcome": "discharged stable after IV fluids administered with safety-netting advice",
+    "_source_file": "patient_03.pdf"
+  },
+  {
+    "name": "Aaron Mbeki",
+    "age": "51",
+    "gender": "Male",
+    "presenting_complaint_1": "haematuria",
+    "presenting_complaint_2": null,
+    "visit_outcome": "urine culture sent, urology referral arranged",
+    "_source_file": "patient_027.pdf"
+  },
+  {
+    "name": "Orla Flanagan",
+    "age": "81",
+    "gender": "Female",
+    "presenting_complaint_1": "intermittent ankle pain",
+    "presenting_complaint_2": "inability to weight-bear",
+    "visit_outcome": "X-ray ordered, fracture excluded, moonboot applied",
+    "_source_file": "patient_025.pdf"
+  },
+  {
+    "name": "Arden Blackwood",
+    "age": "76",
+    "gender": "Non-binary",
+    "presenting_complaint_1": "toothache",
+    "presenting_complaint_2": null,
+    "visit_outcome": "analgesia prescribed, dental referral given",
+    "_source_file": "patient_032.pdf"
+  },
+  {
+    "name": "Aigerim Bekova",
+    "age": "58",
+    "gender": "Female",
+    "presenting_complaint_1": "cough",
+    "presenting_complaint_2": "wheeze",
+    "visit_outcome": "acute asthma, nebulisers administered, steroids prescribed; patient counselled and safety-netting advice provided",
+    "_source_file": "patient_028.pdf"
+  },
+  {
+    "name": "Deepa Krishnan",
+    "age": "59",
+    "gender": "Female",
+    "presenting_complaint_1": "leg pain",
+    "presenting_complaint_2": "redness",
+    "visit_outcome": "cellulitis confirmed, IV antibiotics commenced, safety-netting advice provided",
+    "_source_file": "patient_030.pdf"
+  },
+  {
+    "name": "Amelia Thornton",
+    "age": "76",
+    "gender": "Female",
+    "presenting_complaint_1": "headache",
+    "presenting_complaint_2": "neck stiffness",
+    "visit_outcome": "CT head normal, LP performed, neurology review; patient given verbal and written information and advised on when to return if symptoms worsen",
+    "_source_file": "patient_034.pdf"
+  },
+  {
+    "name": "Maya Lindqvist",
+    "age": "69",
+    "gender": "Female",
+    "presenting_complaint_1": "shoulder pain",
+    "presenting_complaint_2": null,
+    "visit_outcome": "X-ray NAD, analgesia prescribed, physiotherapy referral",
+    "_source_file": "patient_029.pdf"
+  },
+  {
+    "name": "Casey Moreau",
+    "age": "38",
+    "gender": "Non-binary",
+    "presenting_complaint_1": "leg pain since the weekend",
+    "presenting_complaint_2": "redness, intermittent and somewhat distinct from primary complaint",
+    "visit_outcome": "cellulitis confirmed, IV antibiotics commenced",
+    "_source_file": "patient_033.pdf"
+  },
+  {
+    "name": "Patrick Devlin",
+    "age": "52",
+    "gender": "Male",
+    "presenting_complaint_1": "urinary retention",
+    "presenting_complaint_2": null,
+    "visit_outcome": "catheterised, urology urgent review arranged",
+    "_source_file": "patient_035.pdf"
+  },
+  {
+    "name": "Zoe Papadopoulos",
+    "age": "25",
+    "gender": "Female",
+    "presenting_complaint_1": "ankle pain",
+    "presenting_complaint_2": "inability to weight-bear",
+    "visit_outcome": "X-ray ordered, fracture excluded, moonboot applied, verbal and written information given, advised on when to return if symptoms worsen",
+    "_source_file": "patient_031.pdf"
+  },
+  {
+    "name": "James Cartwright",
+    "age": "26",
+    "gender": "Male",
+    "presenting_complaint_1": "confusion",
+    "presenting_complaint_2": "fever",
+    "visit_outcome": "lumbar puncture performed, empirical antibiotics started",
+    "_source_file": "patient_020.pdf"
+  },
+  {
+    "name": "Umar Chaudhry",
+    "age": "50",
+    "gender": "Male",
+    "presenting_complaint_1": "weakness",
+    "presenting_complaint_2": "facial droop",
+    "visit_outcome": "stroke pathway activated, CT head performed, verbal and written information given, advised on when to return if symptoms worsen",
+    "_source_file": "patient_037.pdf"
+  },
+  {
+    "name": "Xander Petrov",
+    "age": "61",
+    "gender": "Male",
+    "presenting_complaint_1": "sore throat",
+    "presenting_complaint_2": null,
+    "visit_outcome": "throat swab taken, oral antibiotics prescribed",
+    "_source_file": "patient_036.pdf"
+  },
+  {
+    "name": "Brigid Murphy",
+    "age": "66",
+    "gender": "Female",
+    "presenting_complaint_1": "knee pain",
+    "presenting_complaint_2": null,
+    "visit_outcome": "X-ray performed, physiotherapy referral arranged",
+    "_source_file": "patient_040.pdf"
+  },
+  {
+    "name": "Nils Andersen",
+    "age": "69",
+    "gender": "Male",
+    "presenting_complaint_1": "urinary retention",
+    "presenting_complaint_2": null,
+    "visit_outcome": "catheterised, urology urgent review arranged",
+    "_source_file": "patient_039.pdf"
+  },
+  {
+    "name": "Thomas Brannigan",
+    "age": "68",
+    "gender": "Male",
+    "presenting_complaint_1": "intermittent confusion",
+    "presenting_complaint_2": null,
+    "visit_outcome": "admitted \u2014 query UTI with delirium",
+    "_source_file": "patient_04.pdf"
+  },
+  {
+    "name": "Ibrahim Diop",
+    "age": "46",
+    "gender": "Male",
+    "presenting_complaint_1": "cough",
+    "presenting_complaint_2": "haemoptysis",
+    "visit_outcome": "chest X-ray ordered, respiratory referral arranged, safety-netting advice provided",
+    "_source_file": "patient_038.pdf"
+  },
+  {
+    "name": "Emery Nakamura",
+    "age": "73",
+    "gender": "Non-binary",
+    "presenting_complaint_1": "ear pain",
+    "presenting_complaint_2": null,
+    "visit_outcome": "otitis media confirmed, antibiotics prescribed, safety-netting advice provided",
+    "_source_file": "patient_042.pdf"
+  },
+  {
+    "name": "Simone Ndegwa",
+    "age": "49",
+    "gender": "Female",
+    "presenting_complaint_1": "intermittent confusion",
+    "presenting_complaint_2": "incontinence",
+    "visit_outcome": "UTI confirmed on dipstick, oral antibiotics commenced",
+    "_source_file": "patient_041.pdf"
+  },
+  {
+    "name": "Quinlan Murphy",
+    "age": "19",
+    "gender": "Male",
+    "presenting_complaint_1": "haematuria",
+    "presenting_complaint_2": null,
+    "visit_outcome": "urine culture sent, urology referral arranged",
+    "_source_file": "patient_045.pdf"
+  },
+  {
+    "name": "Beatrice Okonkwo",
+    "age": "77",
+    "gender": "Female",
+    "presenting_complaint_1": "seizure",
+    "presenting_complaint_2": null,
+    "visit_outcome": "post-ictal, loaded with levetiracetam, neurology review",
+    "_source_file": "patient_047.pdf"
+  },
+  {
+    "name": "Liora Cohen",
+    "age": "58",
+    "gender": "Female",
+    "presenting_complaint_1": "back pain",
+    "presenting_complaint_2": "leg weakness",
+    "visit_outcome": "urgent MRI spine requested, neurosurgery review, patient counselled and safety-netting advice provided",
+    "_source_file": "patient_043.pdf"
+  },
+  {
+    "name": "Harper Volkov",
+    "age": "40",
+    "gender": "Non-binary",
+    "presenting_complaint_1": "intermittent cough",
+    "presenting_complaint_2": "haemoptysis",
+    "visit_outcome": "chest X-ray ordered, respiratory referral arranged",
+    "_source_file": "patient_044.pdf"
+  },
+  {
+    "name": "Valentina Russo",
+    "age": "46",
+    "gender": "Female",
+    "presenting_complaint_1": "rectal bleeding",
+    "presenting_complaint_2": null,
+    "visit_outcome": "PR examination performed, gastroenterology referral",
+    "_source_file": "patient_050.pdf"
+  },
+  {
+    "name": "Keiko Nakashima",
+    "age": "45",
+    "gender": "Female",
+    "presenting_complaint_1": "dizziness",
+    "presenting_complaint_2": null,
+    "visit_outcome": "orthostatic hypotension confirmed, advised hydration and GP follow-up",
+    "_source_file": "patient_048.pdf"
+  },
+  {
+    "name": "Victor Sousa",
+    "age": "81",
+    "gender": "Male",
+    "presenting_complaint_1": "ear pain",
+    "presenting_complaint_2": "ear discharge",
+    "visit_outcome": "otitis externa confirmed, ear drops prescribed",
+    "_source_file": "patient_054.pdf"
+  },
+  {
+    "name": "Farouk Benali",
+    "age": "51",
+    "gender": "Male",
+    "presenting_complaint_1": "confusion",
+    "presenting_complaint_2": "incontinence",
+    "visit_outcome": "UTI confirmed on dipstick, oral antibiotics commenced, safety-netting advice provided",
+    "_source_file": "patient_052.pdf"
+  },
+  {
+    "name": "Clara Johansson",
+    "age": "52",
+    "gender": "Female",
+    "presenting_complaint_1": "nosebleed",
+    "presenting_complaint_2": null,
+    "visit_outcome": "pressure applied, cautery performed, discharged",
+    "_source_file": "patient_055.pdf"
+  },
+  {
+    "name": "Zack Beaumont",
+    "age": "76",
+    "gender": "Male",
+    "presenting_complaint_1": "breathlessness",
+    "presenting_complaint_2": "ankle swelling",
+    "visit_outcome": "BNP elevated, diuretics commenced, cardiology review",
+    "_source_file": "patient_053.pdf"
+  },
+  {
+    "name": "Yusuf Abdi",
+    "age": "35",
+    "gender": "Male",
+    "presenting_complaint_1": "abdominal pain",
+    "presenting_complaint_2": "diarrhoea",
+    "visit_outcome": "stool culture sent, IV fluids, surgical review requested; given verbal and written information; advised on when to return if symptoms worsen",
+    "_source_file": "patient_049.pdf"
+  },
+  {
+    "name": "Camille L\u00e9vesque",
+    "age": "39",
+    "gender": "Female",
+    "presenting_complaint_1": "wrist pain since the weekend",
+    "presenting_complaint_2": "bruising",
+    "visit_outcome": "X-ray confirmed distal radius fracture, plastered; patient counselled and safety-netting advice provided",
+    "_source_file": "patient_051.pdf"
+  },
+  {
+    "name": "Ximena Fuentes",
+    "age": "19",
+    "gender": "Female",
+    "presenting_complaint_1": "rash on forearms",
+    "presenting_complaint_2": "mild fever",
+    "visit_outcome": "antihistamines prescribed, follow-up in 5 days, safety-netting advice provided",
+    "_source_file": "patient_05.pdf"
+  },
+  {
+    "name": "Dmitri Lebedev",
+    "age": "49",
+    "gender": "Male",
+    "presenting_complaint_1": "confusion",
+    "presenting_complaint_2": "incontinence",
+    "visit_outcome": "UTI confirmed on dipstick, oral antibiotics commenced",
+    "_source_file": "patient_056.pdf"
+  },
+  {
+    "name": "Kit Okonkwo",
+    "age": "55",
+    "gender": "Non-binary",
+    "presenting_complaint_1": "hip pain",
+    "presenting_complaint_2": null,
+    "visit_outcome": "X-ray requested, orthopaedics review arranged",
+    "_source_file": "patient_058.pdf"
+  },
+  {
+    "name": "Imogen Patel",
+    "age": "38",
+    "gender": "Female",
+    "presenting_complaint_1": "nausea",
+    "presenting_complaint_2": "dizziness",
+    "visit_outcome": "vestibular neuritis suspected, prochlorperazine prescribed",
+    "_source_file": "patient_057.pdf"
+  },
+  {
+    "name": "Benjamin Larsson",
+    "age": "37",
+    "gender": "Male",
+    "presenting_complaint_1": "leg swelling",
+    "presenting_complaint_2": "calf tenderness",
+    "visit_outcome": "D-dimer elevated, CTPA requested, anticoagulation commenced",
+    "_source_file": "patient_059.pdf"
+  },
+  {
+    "name": "Marcus Webb",
+    "age": "72",
+    "gender": "Male",
+    "presenting_complaint_1": "hip pain",
+    "presenting_complaint_2": null,
+    "visit_outcome": "X-ray requested, orthopaedics review arranged, counselled with safety-netting advice",
+    "_source_file": "patient_060.pdf"
+  },
+  {
+    "name": "Hannah Bergstr\u00f6m",
+    "age": "65",
+    "gender": "Female",
+    "presenting_complaint_1": "confusion",
+    "presenting_complaint_2": "incontinence",
+    "visit_outcome": "UTI confirmed on dipstick, oral antibiotics commenced",
+    "_source_file": "patient_061.pdf"
+  },
+  {
+    "name": "Weston Dalgleish",
+    "age": "72",
+    "gender": "Male",
+    "presenting_complaint_1": "groin pain",
+    "presenting_complaint_2": "nausea",
+    "visit_outcome": "hernia suspected, surgical review arranged",
+    "_source_file": "patient_062.pdf"
+  },
+  {
+    "name": "Drew Fitzgerald",
+    "age": "82",
+    "gender": "Non-binary",
+    "presenting_complaint_1": "intermittent rectal bleeding",
+    "presenting_complaint_2": null,
+    "visit_outcome": "PR examination performed, gastroenterology referral, verbal and written information given, advised on when to return if symptoms worsen",
+    "_source_file": "patient_066.pdf"
+  },
+  {
+    "name": "Quinn Delacroix",
+    "age": "52",
+    "gender": "Female",
+    "presenting_complaint_1": "rectal bleeding",
+    "presenting_complaint_2": null,
+    "visit_outcome": "PR examination performed, gastroenterology referral, counselled with safety-netting advice",
+    "_source_file": "patient_065.pdf"
+  },
+  {
+    "name": "Rashid Okafor",
+    "age": "85",
+    "gender": "Male",
+    "presenting_complaint_1": "nosebleed",
+    "presenting_complaint_2": null,
+    "visit_outcome": "pressure applied, cautery performed, discharged",
+    "_source_file": "patient_068.pdf"
+  },
+  {
+    "name": "Hassan Al-Rashid",
+    "age": "77",
+    "gender": "Male",
+    "presenting_complaint_1": "rectal bleeding",
+    "presenting_complaint_2": null,
+    "visit_outcome": "PR examination performed, gastroenterology referral, patient counselled with safety-netting advice",
+    "_source_file": "patient_063.pdf"
+  },
+  {
+    "name": "Callum Reid",
+    "age": "45",
+    "gender": "Male",
+    "presenting_complaint_1": "intermittent palpitations",
+    "presenting_complaint_2": null,
+    "visit_outcome": "ECG performed \u2014 normal sinus rhythm, cardiology referral, verbal and written information given, advised on when to return if symptoms worsen",
+    "_source_file": "patient_06.pdf"
+  },
+  {
+    "name": "Nadia Petrov",
+    "age": "38",
+    "gender": "Female",
+    "presenting_complaint_1": "fever since the weekend",
+    "presenting_complaint_2": "rigors",
+    "visit_outcome": "blood cultures taken, broad-spectrum IV antibiotics commenced",
+    "_source_file": "patient_046.pdf"
+  },
+  {
+    "name": "Fatoumata Diallo",
+    "age": "52",
+    "gender": "Female",
+    "presenting_complaint_1": "jaundice",
+    "presenting_complaint_2": "abdominal pain",
+    "visit_outcome": "LFTs deranged, urgent hepatology referral",
+    "_source_file": "patient_070.pdf"
+  },
+  {
+    "name": "Cedric Oduya",
+    "age": "66",
+    "gender": "Male",
+    "presenting_complaint_1": "urinary retention",
+    "presenting_complaint_2": null,
+    "visit_outcome": "catheterised, urology urgent review arranged",
+    "_source_file": "patient_067.pdf"
+  },
+  {
+    "name": "Patience Asante",
+    "age": "22",
+    "gender": "Female",
+    "presenting_complaint_1": "toothache",
+    "presenting_complaint_2": null,
+    "visit_outcome": "analgesia prescribed, dental referral given",
+    "_source_file": "patient_077.pdf"
+  },
+  {
+    "name": "Eleanor Hutchins",
+    "age": "44",
+    "gender": "Female",
+    "presenting_complaint_1": "intermittent shortness of breath",
+    "presenting_complaint_2": "pleuritic pain",
+    "visit_outcome": "pleuritis suspected, analgesia and follow-up arranged",
+    "_source_file": "patient_071.pdf"
+  },
+  {
+    "name": "Danielle Reyes",
+    "age": "53",
+    "gender": "Female",
+    "presenting_complaint_1": "rash",
+    "presenting_complaint_2": "joint pain",
+    "visit_outcome": "rheumatology referral arranged, bloods sent, safety-netting advice provided",
+    "_source_file": "patient_072.pdf"
+  },
+  {
+    "name": "Adaeze Mbachu",
+    "age": "38",
+    "gender": "Female",
+    "presenting_complaint_1": "headache since the weekend",
+    "presenting_complaint_2": "photophobia",
+    "visit_outcome": "discharged with analgesia, red flags advice given",
+    "_source_file": "patient_07.pdf"
+  },
+  {
+    "name": "Jamie Lindqvist",
+    "age": "82",
+    "gender": "Non-binary",
+    "presenting_complaint_1": "cough",
+    "presenting_complaint_2": "wheeze",
+    "visit_outcome": "acute asthma, nebulisers administered, steroids prescribed, safety-netting advice provided",
+    "_source_file": "patient_074.pdf"
+  },
+  {
+    "name": "Bruno Carvalho",
+    "age": "36",
+    "gender": "Male",
+    "presenting_complaint_1": "leg pain since the weekend",
+    "presenting_complaint_2": "redness",
+    "visit_outcome": "cellulitis confirmed, IV antibiotics commenced",
+    "_source_file": "patient_073.pdf"
+  },
+  {
+    "name": "Ulrike Brandt",
+    "age": "66",
+    "gender": "Female",
+    "presenting_complaint_1": "confusion",
+    "presenting_complaint_2": "incontinence",
+    "visit_outcome": "UTI confirmed on dipstick, oral antibiotics commenced, counselled regarding nature of presentation, safety-netting advice provided",
+    "_source_file": "patient_076.pdf"
+  },
+  {
+    "name": "Wren Castellano",
+    "age": "45",
+    "gender": "Female",
+    "presenting_complaint_1": "cough since the weekend",
+    "presenting_complaint_2": "haemoptysis",
+    "visit_outcome": "chest X-ray ordered, respiratory referral arranged",
+    "_source_file": "patient_080.pdf"
+  },
+  {
+    "name": "Jasmine Al-Farsi",
+    "age": "47",
+    "gender": "Female",
+    "presenting_complaint_1": "tinnitus",
+    "presenting_complaint_2": null,
+    "visit_outcome": "audiometry arranged, ENT referral given, verbal and written information provided, advised on when to return if symptoms worsen",
+    "_source_file": "patient_079.pdf"
+  },
+  {
+    "name": "Mikhail Sorokin",
+    "age": "55",
+    "gender": "Male",
+    "presenting_complaint_1": "intermittent breathlessness",
+    "presenting_complaint_2": "intermittent ankle swelling",
+    "visit_outcome": "BNP elevated, diuretics commenced, cardiology review",
+    "_source_file": "patient_084.pdf"
+  },
+  {
+    "name": "Soraya Nazari",
+    "age": "34",
+    "gender": "Female",
+    "presenting_complaint_1": "intermittent haematuria",
+    "presenting_complaint_2": null,
+    "visit_outcome": "urine culture sent, urology referral arranged",
+    "_source_file": "patient_083.pdf"
+  },
+  {
+    "name": "Kofi Asante",
+    "age": "64",
+    "gender": "Male",
+    "presenting_complaint_1": "ear pain",
+    "presenting_complaint_2": "ear discharge",
+    "visit_outcome": "otitis externa confirmed, ear drops prescribed, safety-netting advice provided",
+    "_source_file": "patient_082.pdf"
+  },
+  {
+    "name": "Xiomara Fuentes",
+    "age": "64",
+    "gender": "Female",
+    "presenting_complaint_1": "intermittent syncope",
+    "presenting_complaint_2": null,
+    "visit_outcome": "discharged with neurology referral",
+    "_source_file": "patient_064.pdf"
+  },
+  {
+    "name": "Ferdinand Baxter",
+    "age": "61",
+    "gender": "Male",
+    "presenting_complaint_1": "palpitations",
+    "presenting_complaint_2": "chest tightness",
+    "visit_outcome": "12-lead ECG performed, AF noted, rate control commenced",
+    "_source_file": "patient_086.pdf"
+  },
+  {
+    "name": "Celestine Moreau",
+    "age": "42",
+    "gender": "Female",
+    "presenting_complaint_1": "dizziness",
+    "presenting_complaint_2": null,
+    "visit_outcome": "orthostatic hypotension confirmed, advised hydration and GP follow-up",
+    "_source_file": "patient_087.pdf"
+  },
+  {
+    "name": "Adaora Eze",
+    "age": "23",
+    "gender": "Female",
+    "presenting_complaint_1": "headache",
+    "presenting_complaint_2": "neck stiffness",
+    "visit_outcome": "CT head normal, LP performed, neurology review",
+    "_source_file": "patient_091.pdf"
+  },
+  {
+    "name": "Henry Szymanski",
+    "age": "74",
+    "gender": "Male",
+    "presenting_complaint_1": "intermittent fall at home",
+    "presenting_complaint_2": "right wrist pain",
+    "visit_outcome": "X-ray confirmed Colles fracture \u2014 plastered and referred",
+    "_source_file": "patient_08.pdf"
+  },
+  {
+    "name": "Gray Delacour",
+    "age": "18",
+    "gender": "Non-binary",
+    "presenting_complaint_1": "intermittent abdominal pain",
+    "presenting_complaint_2": "diarrhoea",
+    "visit_outcome": "stool culture sent, IV fluids, surgical review requested",
+    "_source_file": "patient_081.pdf"
+  },
+  {
+    "name": "Tariq Saleh",
+    "age": "38",
+    "gender": "Male",
+    "presenting_complaint_1": "abdominal pain",
+    "presenting_complaint_2": "diarrhoea",
+    "visit_outcome": "stool culture sent, IV fluids, surgical review requested",
+    "_source_file": "patient_088.pdf"
+  },
+  {
+    "name": "Luca Ferreira",
+    "age": "32",
+    "gender": "Male",
+    "presenting_complaint_1": "shoulder pain",
+    "presenting_complaint_2": null,
+    "visit_outcome": "X-ray NAD, analgesia prescribed, physiotherapy referral",
+    "_source_file": "patient_069.pdf"
+  },
+  {
+    "name": "Ingrid Halvorsen",
+    "age": "67",
+    "gender": "Female",
+    "presenting_complaint_1": "epistaxis",
+    "presenting_complaint_2": null,
+    "visit_outcome": "nasal packing applied, discharged with ENT follow-up",
+    "_source_file": "patient_089.pdf"
+  },
+  {
+    "name": "Matthias Keller",
+    "age": "50",
+    "gender": "Male",
+    "presenting_complaint_1": "rectal bleeding",
+    "presenting_complaint_2": null,
+    "visit_outcome": "PR examination performed, gastroenterology referral",
+    "_source_file": "patient_090.pdf"
+  },
+  {
+    "name": "Fatima Al-Rashidi",
+    "age": "31",
+    "gender": "Female",
+    "presenting_complaint_1": "abdominal pain",
+    "presenting_complaint_2": null,
+    "visit_outcome": "urgent gynaecology review arranged; counselled regarding presentation; safety-netting advice provided",
+    "_source_file": "patient_09.pdf"
+  },
+  {
+    "name": "Cormac Gallagher",
+    "age": "58",
+    "gender": "Male",
+    "presenting_complaint_1": "urinary retention",
+    "presenting_complaint_2": null,
+    "visit_outcome": "catheterised, urology urgent review arranged",
+    "_source_file": "patient_095.pdf"
+  },
+  {
+    "name": "Leonora Bassi",
+    "age": "72",
+    "gender": "Female",
+    "presenting_complaint_1": "knee pain",
+    "presenting_complaint_2": null,
+    "visit_outcome": "X-ray performed, physiotherapy referral arranged",
+    "_source_file": "patient_094.pdf"
+  },
+  {
+    "name": "Solomon Tekeste",
+    "age": "44",
+    "gender": "Male",
+    "presenting_complaint_1": "nausea",
+    "presenting_complaint_2": "dizziness",
+    "visit_outcome": "vestibular neuritis suspected, prochlorperazine prescribed, verbal and written information given, advised on when to return if symptoms worsen",
+    "_source_file": "patient_092.pdf"
+  },
+  {
+    "name": "Aleksei Volkov",
+    "age": "38",
+    "gender": "Male",
+    "presenting_complaint_1": "swollen ankle",
+    "presenting_complaint_2": null,
+    "visit_outcome": "X-ray NAD, RICE advice given, discharged",
+    "_source_file": "patient_078.pdf"
+  },
+  {
+    "name": "Soleil Fontaine",
+    "age": "26",
+    "gender": "Female",
+    "presenting_complaint_1": "ankle pain",
+    "presenting_complaint_2": "inability to weight-bear",
+    "visit_outcome": "X-ray ordered, fracture excluded, moonboot applied",
+    "_source_file": "patient_098.pdf"
+  },
+  {
+    "name": "Priscilla Osei",
+    "age": "29",
+    "gender": "Female",
+    "presenting_complaint_1": "wrist pain",
+    "presenting_complaint_2": "bruising",
+    "visit_outcome": "X-ray confirmed distal radius fracture, plastered. Documentation was completed and patient was informed of follow-up requirements.",
+    "_source_file": "patient_085.pdf"
+  },
+  {
+    "name": "Finley Osei",
+    "age": "31",
+    "gender": "Non-binary",
+    "presenting_complaint_1": "leg swelling",
+    "presenting_complaint_2": "calf tenderness",
+    "visit_outcome": "D-dimer elevated, CTPA requested, anticoagulation commenced",
+    "_source_file": "patient_075.pdf"
+  },
+  {
+    "name": "Kwame Mensah",
+    "age": "53",
+    "gender": "Male",
+    "presenting_complaint_1": "dizziness",
+    "presenting_complaint_2": null,
+    "visit_outcome": "orthostatic hypotension confirmed, advised hydration and GP follow-up; counselled regarding presentation and safety-netting advice provided",
+    "_source_file": "patient_099.pdf"
+  },
+  {
+    "name": "Miriam Oduya",
+    "age": "35",
+    "gender": "Female",
+    "presenting_complaint_1": "rectal bleeding",
+    "presenting_complaint_2": null,
+    "visit_outcome": "PR examination performed, gastroenterology referral, patient counselled with safety-netting advice",
+    "_source_file": "patient_096.pdf"
+  },
+  {
+    "name": "Sage Winterbottom",
+    "age": "28",
+    "gender": "Non-binary",
+    "presenting_complaint_1": "rash",
+    "presenting_complaint_2": "blistering",
+    "visit_outcome": "dermatology review arranged, oral antihistamines prescribed, safety-netting advice provided",
+    "_source_file": "patient_101.pdf"
+  },
+  {
+    "name": "River Osei",
+    "age": "29",
+    "gender": "Non-binary",
+    "presenting_complaint_1": "chest pain on exertion since the weekend",
+    "presenting_complaint_2": "shortness of breath",
+    "visit_outcome": "troponin and ECG ordered, monitored for 4 hours, discharged with cardiology follow-up",
+    "_source_file": "patient_11.pdf"
+  },
+  {
+    "name": "Jonah Whitfield",
+    "age": "56",
+    "gender": "Male",
+    "presenting_complaint_1": "intermittent productive cough",
+    "presenting_complaint_2": "night sweats",
+    "visit_outcome": "chest X-ray ordered, sputum culture sent, follow-up 48 h",
+    "_source_file": "patient_10.pdf"
+  },
+  {
+    "name": "Sasha Kowalczyk",
+    "age": "43",
+    "gender": "Non-binary",
+    "presenting_complaint_1": "severe migraine",
+    "presenting_complaint_2": null,
+    "visit_outcome": "discharged after 2 hours with neurology referral",
+    "_source_file": "patient_12.pdf"
+  },
+  {
+    "name": "Barnaby Hutchinson",
+    "age": "64",
+    "gender": "Male",
+    "presenting_complaint_1": "haematuria",
+    "presenting_complaint_2": null,
+    "visit_outcome": "urine culture sent, urology referral arranged, safety-netting advice provided",
+    "_source_file": "patient_102.pdf"
+  },
+  {
+    "name": "Rowan Abernethy",
+    "age": "31",
+    "gender": "Non-binary",
+    "presenting_complaint_1": "shoulder pain",
+    "presenting_complaint_2": null,
+    "visit_outcome": "X-ray NAD, analgesia prescribed, physiotherapy referral",
+    "_source_file": "patient_093.pdf"
+  },
+  {
+    "name": "Alexei Nikitin",
+    "age": "47",
+    "gender": "Male",
+    "presenting_complaint_1": "back pain",
+    "presenting_complaint_2": "leg weakness",
+    "visit_outcome": "urgent MRI spine requested, neurosurgery review",
+    "_source_file": "patient_097.pdf"
+  },
+  {
+    "name": "Petra Hor\u00e1Iek",
+    "age": "39",
+    "gender": "Female",
+    "presenting_complaint_1": "confusion",
+    "presenting_complaint_2": "incontinence",
+    "visit_outcome": "UTI confirmed on dipstick, oral antibiotics commenced. The patient was given verbal and written information regarding her condition and advised on when to return should symptoms worsen.",
+    "_source_file": "patient_100.pdf"
+  }
+]

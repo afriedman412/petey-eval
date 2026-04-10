@@ -1,0 +1,41 @@
+{
+  "benchmark_dir": "../benchmarks",
+  "data_dir": "par_decision",
+  "ground_truth": "par_ground_truth.csv",
+  "pdf_glob": "*.pdf",
+  "schema": "par_decision_schema_simple.yaml",
+  "configs": [
+    {
+      "parser": "marker",
+      "model": "gpt-4.1-mini"
+    },
+    {
+      "parser": "marker",
+      "model": "gpt-4.1"
+    },
+    {
+      "parser": "marker",
+      "model": "claude-sonnet-4-6"
+    },
+    {
+      "parser": "marker",
+      "model": "claude-haiku-4-5"
+    },
+    {
+      "parser": "marker",
+      "model": "gemini/gemini-2.5-flash"
+    },
+    {
+      "parser": "marker",
+      "model": "deepseek/deepseek-chat"
+    },
+    {
+      "parser": "marker",
+      "model": "fireworks_ai/accounts/fireworks/models/llama-v3p3-70b-instruct",
+      "concurrency": 3
+    }
+  ],
+  "output_dir": "results",
+  "save_extractions": true,
+  "save_report": true
+}

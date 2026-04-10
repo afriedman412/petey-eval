@@ -1,0 +1,20 @@
+{
+  "benchmark_dir": "../benchmarks",
+  "data_dir": "par_decision",
+  "ground_truth": "par_ground_truth.csv",
+  "pdf_glob": "*.pdf",
+  "schema": "par_decision_schema_simple.yaml",
+  "configs": [
+    { "parser": "pymupdf", "model": "gpt-4.1-mini" },
+    { "parser": "pymupdf", "model": "claude-sonnet-4-6" },
+    { "parser": "pymupdf", "model": "gemini/gemini-2.5-flash" },
+    { "parser": "pymupdf", "model": "deepseek/deepseek-chat" },
+    { "parser": "unstructured", "model": "gpt-4.1-mini" },
+    { "parser": "unstructured", "model": "claude-sonnet-4-6" },
+    { "parser": "unstructured", "model": "gemini/gemini-2.5-flash" },
+    { "parser": "unstructured", "model": "deepseek/deepseek-chat" }
+  ],
+  "output_dir": "results",
+  "save_extractions": true,
+  "save_report": true
+}

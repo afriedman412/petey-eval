@@ -1,0 +1,103 @@
+
+*-key.json
+*.log
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+.DS_Store
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+# MANIFEST
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv / IDE
+.python-version
+.vscode/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# ruff
+.ruff_cache/
+
+# --- petey-eval exclusions ---
+
+# Raw run results (superseded by consolidated/)
+results/
+
+# Large plotly export
+benchmark_charts_pio.html
+
+# Sample data subset (full data in ../benchmarks/)
+claude_data/
+
+# Older consolidated copies (canonical data is in consolidated/20260330/)
+consolidated/medical/
+consolidated/par_simple/
+consolidated/par_detailed/
+consolidated/par_ocr/
+
+# One-off config files (canonical ones are un-ignored below)
+configs/*
+!configs/config_model_sweep_med.json
+!configs/config_model_sweep_par.json
+!configs/config_model_sweep_par_complex.json
+!configs/config_parser_sweep_med.json
+!configs/config_parser_sweep_par_simple.json
+!configs/config_par_simple_sweep_full.json
+!configs/config_gpt5_sweep_med.json
+!configs/config_gpt5_sweep_par_simple.json
