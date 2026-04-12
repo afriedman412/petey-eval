@@ -91,5 +91,6 @@ claude_data/
 
 # Old extraction results (now on GCS)
 consolidated/
+consolidated_results/
 configs/
 
