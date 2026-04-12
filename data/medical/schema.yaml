@@ -1,0 +1,23 @@
+name: Claude Test Docs
+
+fields:
+  name:
+    type: string
+
+  age:
+    type: string
+
+  gender:
+    type: enum
+    description: infer from pronouns if not obvious!
+    values: [Male, Female, Non-binary]
+
+  presenting_complaint_1:
+    type: string
+
+  presenting_complaint_2:
+    type: string
+    description: can be null!
+
+  visit_outcome:
+    type: string

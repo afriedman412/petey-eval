@@ -1,0 +1,24 @@
+name: date_format_test
+model: gpt-5.4
+parser: marker
+instructions: "DHCR PAR decisions. Extract the requested fields."
+
+fields:
+  par_filed_date:
+    type: date
+    description: "Date the PAR was filed."
+  par_filed_date_fmt:
+    type: date
+    description: "Date the PAR was filed, in YYYY-MM-DD format."
+  ra_order_issued:
+    type: date
+    description: "Date the RA order was issued."
+  ra_order_issued_fmt:
+    type: date
+    description: "Date the RA order was issued, in YYYY-MM-DD format."
+  issue_date:
+    type: date
+    description: "Date from the ISSUED stamp."
+  issue_date_fmt:
+    type: date
+    description: "Date from the ISSUED stamp, in YYYY-MM-DD format."

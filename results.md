@@ -38,6 +38,28 @@ Documents were parsed with PyMuPDF and Tesseract, then passed to the indicated m
 
 The PAR documents demonstrate the variation in performance across these models, but the less challenging Medical data shows how less sophisticated models can be a perfectly adequate choice.
 
+### GPT-5 Update
+
+We re-ran the model comparison with OpenAI's GPT-5 family: GPT-5, GPT-5 Mini, GPT-5.4, and GPT-5.4 Mini.
+
+**Medical (easy docs):** GPT-5.4 takes the top spot at 99.8%, narrowly beating the previous best. GPT-5.4 Mini (99.7%) also outperforms every GPT-4 model. On easy documents, the newest models are a clear upgrade — though the margins are thin when everyone is above 98%.
+
+**PAR (hard docs):** The picture is more nuanced. GPT-5 scores 95.0%, slotting in behind GPT-4.1 (96.7%) but ahead of Sonnet (94.0%). GPT-5 Mini matches Sonnet at 94.0% — a significant jump over GPT-4.1 Mini's 90.4%, making it the new value pick for challenging documents.
+
+However, GPT-5.4 and GPT-5.4 Mini struggle on the PAR data (83.9% and 83.7%), particularly on date fields from scanned documents. Despite being the newest models, they perform worse than GPT-4.1 Mini on hard docs. This is a good reminder that newer doesn't always mean better for every task.
+
+| Model | Medical | PAR Simple |
+|-------|---------|------------|
+| GPT-5.4 | **99.8%** | 83.9% |
+| GPT-5.4 Mini | 99.7% | 83.7% |
+| GPT-5 | 99.1% | **95.0%** |
+| GPT-5 Mini | 98.2% | **94.0%** |
+| GPT-4.1 | 98.6% | 96.7% |
+| GPT-4.1 Mini | 98.9% | 90.4% |
+| Claude Sonnet | 99.6% | 94.0% |
+
+**Bottom line:** GPT-5 Mini is the new default recommendation — it matches Sonnet on hard documents at a fraction of the cost, and handily beats GPT-4.1 Mini. For easy documents, GPT-5.4 Mini is nearly perfect. GPT-4.1 remains the best single model for the hardest tasks.
+
 ### Parser Comparison
 
 ![Parser Comparison](charts/02_parser_comparison.png)
@@ -66,7 +88,7 @@ This is the average time it took for each parser to process each data set across
 
 ![OCR Comparison](charts/05_ocr_comparison.png)
 
-Tesseract needs over 8 minutes to process the average PAR document locally. Chandra, an OCR API by Datalab (the same company behind the Datalab parser), does it in 22 seconds on their servers. Sending documents directly to Datalab for combined parsing and OCR takes 107 seconds but produces the highest accuracy — only 1.7 points above Chandra, despite taking five times as long.
+Tesseract needs over 8 minutes to process the average PAR document locally. Datalab's OCR API (Chandra) does it in 22 seconds on their servers. Sending documents directly to Datalab for combined parsing and OCR takes 107 seconds but produces the highest accuracy — only 1.7 points above the standalone OCR, despite taking five times as long.
 
 This is why the PyMuPDF runtime bar is so large for PAR data: it's not the parser that's slow, it's the local OCR. Datalab and Unstructured avoid this entirely by handling OCR on their own servers.
 

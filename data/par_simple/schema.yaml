@@ -1,0 +1,58 @@
+name: PAR Decision (Simple)
+instructions: "DHCR PAR (Petition for Administrative Review) decisions. Extract the requested fields from the document."
+
+fields:
+  petitioner:
+    type: string
+    description: "Name of the petitioner from the caption. Null if only a generic label like 'PETITIONER X'."
+
+  petitioner_type:
+    type: enum
+    description: "Whether the petitioner is the owner or tenant."
+    values: [Owner, Tenant, Both]
+
+  other_party:
+    type: string
+    description: "The opposing party's name from the caption, or null if not given."
+
+  adm_review_docket:
+    type: string
+    description: "The PAR docket number, labeled 'ADMINISTRATIVE REVIEW DOCKET NO.'"
+
+  ra_docket:
+    type: string
+    description: "The RA docket number, labeled 'RENT ADMINISTRATOR'S DOCKET NO.' — not the PAR docket."
+
+  address:
+    type: string
+    description: "Full street address including borough/city."
+
+  apartment:
+    type: string
+    description: "Apartment number. Use 'Various' if the document says 'various apartments'. Null if not mentioned."
+
+  determination:
+    type: enum
+    description: "The Commissioner's decision on the PAR from the THEREFORE clause."
+    values: [Denied, Granted, Granted in Part, Dismissed, Revoked, Modified, Rescinded, Remanded, Terminated, Other]
+
+  ra_determination:
+    type: enum
+    description: "What the Rent Administrator decided in the underlying order, from the applicant's perspective."
+    values: [Granted, Denied, Granted in Part, Terminated, Dismissed, Modified, Determined]
+
+  par_filed_date:
+    type: date
+    description: "Date the PAR was filed."
+
+  ra_order_issued:
+    type: date
+    description: "Date the RA order was issued."
+
+  ra_case_filed:
+    type: date
+    description: "Date the original RA complaint was filed, if mentioned."
+
+  issue_date:
+    type: date
+    description: "Date from the 'ISSUED:' stamp, YYYY-MM-DD or null."

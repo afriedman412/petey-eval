@@ -1,0 +1,121 @@
+name: PAR Decision
+instructions: "These are OCR'd DHCR PAR (Petition for Administrative Review) decisions with a standard structure:
+
+HEADER (top of first page):
+- Caption box with petitioner name (or anonymous placeholder like \"PETITIONER X\")
+- \"ADMINISTRATIVE REVIEW DOCKET NO.\" — the PAR docket (adm_review_docket)
+- \"RENT ADMINISTRATOR'S DOCKET NO.\" — the RA docket (ra_docket), a DIFFERENT number
+- Owner/Tenant labels with party names
+
+FIRST PARAGRAPH (after the title):
+- PAR filing date (\"On [DATE], the petitioner filed...\")
+- RA order date (\"against an order issued on [DATE]\")
+- Address and apartment
+- Description of what the RA decided (ra_determination)
+- Sometimes the RA complaint filing date (\"This proceeding was commenced on [DATE]\")
+
+FINAL SECTION:
+- \"THEREFORE... ORDERED, that this petition be... [denied/granted/etc.]\" — the PAR determination
+- \"ISSUED:\" stamp with the decision date (may appear on any page, often OCR-garbled)
+
+OCR notes:
+- Docket numbers should be copied exactly as printed — do not correct or modify them.
+- OCR often separates digits in ISSUED stamps: \"NOV 1 2 2013\" = November 12, \"APR 3 0 2014\" = April 30.
+- For ra_determination: this is what the RA decided FROM THE APPLICANT'S PERSPECTIVE in the underlying proceeding, NOT the PAR outcome. Ask: \"Did the applicant who filed with the RA get what they asked for?\"
+  - Owner applied for MCI rent increase → RA granted it → ra_determination = Granted
+  - Owner applied for deregulation → RA deregulated the apartment → ra_determination = Granted (even if a tenant later appeals and wins)
+  - Tenant filed overcharge complaint → RA found overcharges → ra_determination = Granted (the tenant-applicant got what they asked for)
+  - Tenant filed services complaint → RA granted rent reduction → ra_determination = Granted
+  - Owner applied for rent restoration → RA denied it → ra_determination = Denied
+  - Owner requested AD to determine building is NOT rent-stabilized → RA found it IS rent-stabilized → ra_determination = Denied (the applicant did NOT get what they asked for)
+  - \"denied the complaint\" / \"no overcharge found\" = Denied. \"granted a rent reduction\" / \"determined apartment to be deregulated\" = Granted.
+  - RA \"terminated the proceeding\" due to failure to submit documents, conditions found maintained at inspection, or untimely filing → ra_determination = Terminated (NOT Denied). \"Terminated\" means the proceeding was ended procedurally, not decided on the merits.
+  - RA made an \"administrative determination\" (AD) of regulatory status (e.g., \"determined the apartment is rent-stabilized\" or \"determined the apartment is rent-controlled\") → ra_determination = Determined. This is a status finding, not a grant or denial of an application.
+- For determination: this is what the Commissioner decided ON THE PAR ITSELF from the THEREFORE clause. It is completely independent of ra_determination. Both can be \"Granted\" when the tenant wins an appeal of an order that granted the owner's application.
+  - If the THEREFORE says \"granted to the extent of remanding,\" determination = Granted (not Remanded). The remand is the remedy, not the determination category.
+- IMPORTANT: ra_determination and determination are independent. Do NOT let one influence the other. The RA may have granted something that the Commissioner then reversed on appeal.
+
+WARNING: Occasionally the THEREFORE clause contains a clerical error (e.g., says \"granted\" when the entire opinion says \"denied\"). If the THEREFORE contradicts the title AND body of the opinion, follow the title and body.
+
+EXAMPLE 1:
+Input (excerpt): \"IN THE MATTER OF THE ADMINISTRATIVE APPEAL OF DOMINICK VALENTINO, PETITIONER / ADMINISTRATIVE REVIEW DOCKET NO.: ZG410017RT / RENT ADMINISTRATOR'S DOCKET NO.: YD410048R / OWNER: BCRE WEST 72 LLC and STELLAR 85, LLC / TENANT OF RECORD: DAVID VALENTINO / On April 9, 2010, the above-named petitioner-tenant filed a rent overcharge complaint... On June 10, 2011, the Rent Administrator issued an Order Denying Application... no overcharge is found. On July 7, 2011, said petitioner-tenant timely filed a Petition for Administrative Review... ORDERED, that this PAR be... denied... ISSUED: NOV 1 2 2013\"
+Output: petitioner=Dominick Valentino, petitioner_type=Tenant, other_party=BCRE West 72 LLC and Stellar 85, LLC, adm_review_docket=ZG410017RT, ra_docket=YD410048R, address=27 West 72nd Street, Manhattan, apartment=1609, determination=Denied, ra_determination=Denied, par_filed_date=2011-07-07, ra_order_issued=2011-06-10, ra_case_filed=2010-04-09, issue_date=2013-11-12
+
+EXAMPLE 2:
+Input (excerpt): \"IN THE MATTER OF THE ADMINISTRATIVE APPEAL OF ERIC WARNER, PETITIONER / SJR NO. 14026 / ADMINISTRATIVE REVIEW DOCKET NO. ZE420003RK / RENT ADMINISTRATOR'S DOCKET NO. WD420001LD / OWNER: MAYFLOWER DEVELOPMENT CORP. / On June 4, 2008, the above-named tenant filed a petition for administrative review (PAR) of an order issued on May 29, 2008... 425 Riverside Drive, Apartment 161... the Rent Administrator determined that the subject apartment was to be deregulated... ORDERED, that this petition for administrative review be granted... ISSUED: DEC 0 7 2011\"
+Output: petitioner=Eric Warner, petitioner_type=Tenant, other_party=Mayflower Development Corp., adm_review_docket=ZE420003RK, ra_docket=WD420001LD, address=425 Riverside Drive, New York, New York, apartment=161, determination=Granted, ra_determination=Granted, par_filed_date=2008-06-04, ra_order_issued=2008-05-29, ra_case_filed=null, issue_date=2011-12-07
+
+EXAMPLE 3:
+Input (excerpt): \"IN THE MATTER OF THE ADMINISTRATIVE APPEAL OF PETITIONER X / ADMINISTRATIVE REVIEW DOCKET NO.: YH610037RO / RENT ADMINISTRATOR'S DOCKET NO.: YD610025S / On August 21, 2010, the above-named petitioner-owner filed a Petition for Administrative Review (PAR) of an order the Rent Administrator issued on July 20, 2010... 1639 Nelson Avenue, Apt 3F, Bronx, NY... the Administrator directed the restoration of services and granted a rent reduction... ORDERED, that this petition be... denied... ISSUED: JAN 0 5 2011\"
+Output: petitioner=null, petitioner_type=Owner, other_party=null, adm_review_docket=YH610037RO, ra_docket=YD610025S, address=1639 Nelson Avenue, Bronx, NY, apartment=3F, determination=Denied, ra_determination=Granted, par_filed_date=2010-08-21, ra_order_issued=2010-07-20, ra_case_filed=null, issue_date=2011-01-05
+
+EXAMPLE 4 (Terminated ra_determination):
+Input (excerpt): \"IN THE MATTER OF THE ADMINISTRATIVE APPEAL OF PETITIONER / ADMINISTRATIVE REVIEW DOCKET NO.: BG130068RO / RENT ADMINISTRATOR'S DOCKET NO.: QCS000587OM / the above-named petitioner-owner timely filed a petition... which denied, in its entirety, the owner's application to increase the rent based upon a claim that a major capital improvement (MCI) was made to the building... The Rent Administrator issued an order which terminated the application due to the petitioner's failure to submit necessary information/evidence... ORDERED, that this petition be... denied...\"
+Output: petitioner=null, petitioner_type=Owner, other_party=null, adm_review_docket=BG130068RO, ra_docket=QCS000587OM, determination=Denied, ra_determination=Terminated
+Note: The RA terminated the proceeding for failure to submit documents — this is Terminated, not Denied. The first paragraph says \"denied\" but the body clarifies it was a termination.
+
+EXAMPLE 5 (Determined ra_determination + Granted-via-remand determination):
+Input (excerpt): \"IN THE MATTER OF THE ADMINISTRATIVE APPEAL OF PETITIONER / ADMINISTRATIVE REVIEW DOCKET NO.: YI210030RT / RENT ADMINISTRATOR'S DOCKET NO.: YA210008AD / OWNER: Sea Park West HDFC / it was determined that the subject apartment and the subject building are exempt from the New York City Rent Stabilization Law... ORDERED, that this proceeding be... terminated...\"
+Output: petitioner=null, petitioner_type=Tenant, other_party=Sea Park West HDFC, adm_review_docket=YI210030RT, ra_docket=YA210008AD, determination=Terminated, ra_determination=Determined
+Note: The RA made an administrative determination (AD) of regulatory status — ra_determination = Determined, not Granted or Denied."
+
+fields:
+  petitioner:
+    type: string
+    description: "Person or company name from the caption. Use null if only a generic label like \"PETITIONER X\" appears. IMPORTANT: If the caption shows \"PETITIONER\" with no name, and a TENANT name is listed separately (e.g., \"TENANT: John Smith\"), petitioner = null. Do NOT put the tenant's name in the petitioner field — the tenant name belongs in other_party.
+"
+
+  petitioner_type:
+    type: enum
+    description: "Whether the petitioner (the party who filed the PAR) is the owner or tenant. Use \"Both\" only for consolidated cases where both sides filed PARs."
+    values: [Owner, Tenant, Both]
+
+  other_party:
+    type: string
+    description: "The opposing party's actual name from the caption, or null if none given. Labels like \"Owner:\" or \"Tenant:\" without a name = null.
+"
+
+  adm_review_docket:
+    type: string
+    description: "The PAR docket number from the header, labeled \"ADMINISTRATIVE REVIEW DOCKET NO.\"
+"
+
+  ra_docket:
+    type: string
+    description: "The RA docket number(s) from the header, labeled \"RENT ADMINISTRATOR'S DOCKET NO.\" NOT the PAR docket. If multiple dockets appear (in parentheses, with \"RECONSID.\", \"incorporating\", etc.), include ALL as comma-separated. Standard modern format is WWDDDDDDWW (2 letters, 6 digits, 1-2 letter suffix) e.g. YD410048R, XK110075OR, ZF411956LD. Older dockets may be purely numeric (e.g. 044408, 35595) or have non-standard formats (e.g. L3117410R, TC070477G, K3102686R). When OCR is ambiguous, use positional logic: positions 0-1 should be letters, positions 2-7 should be digits, position 8+ should be letters. For example, O vs 0 or I vs 1 should be resolved by whether the position expects a letter or digit.
+"
+
+  address:
+    type: string
+    description: Full street address including number, street name, and borough/city
+
+  apartment:
+    type: string
+    description: "Apartment number from the document. Use \"Various\" ONLY if the document explicitly says \"various apartments.\" Use null if no apartment is mentioned, even for building-wide MCI cases."
+
+  determination:
+    type: enum
+    description: "The Commissioner's decision on the PAR from the THEREFORE clause. This is about the APPEAL, not the underlying RA case. \"Granted\" = the petitioner won their appeal. \"Denied\" = the petitioner lost."
+    values: [Denied, Granted, Granted in Part, Dismissed, Revoked, Modified, Rescinded, Remanded, Terminated, Closed Due to Remand, Order Issued, Rejected by Administrative Review, Other]
+
+  ra_determination:
+    type: enum
+    description: "What the Rent Administrator originally decided in the order being appealed, from the APPLICANT'S perspective. Ask: did the person who filed the RA complaint/application get what they asked for? This is independent of the PAR outcome — the Commissioner may reverse it on appeal."
+    values: [Granted, Denied, Granted in Part, Terminated, Dismissed, Modified, Determined]
+
+  par_filed_date:
+    type: date
+    description: Date the PAR was filed, from "On [DATE], the petitioner filed..."
+
+  ra_order_issued:
+    type: date
+    description: Date the RA order was issued, from "against an order issued on [DATE]"
+
+  ra_case_filed:
+    type: date
+    description: Date the original RA complaint was filed, if mentioned
+
+  issue_date:
+    type: date
+    description: "Date from the \"ISSUED:\" stamp, YYYY-MM-DD or null. If the stamp is garbled or the year looks implausible, return null.
+"
