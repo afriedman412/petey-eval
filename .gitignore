@@ -74,23 +74,23 @@ dmypy.json
 # ruff
 .ruff_cache/
 
-# --- petey-eval exclusions ---
+# --- petey-eval ---
 
 # Cached PDFs (downloaded from GCS)
 .pdf_cache/
 
-# Raw run results (uploaded to GCS)
-results/
+# Scored results are tracked; raw extraction JSONs are not
+results/*.json
+results/run_log_*
 
 # Charts (regenerated from results)
 charts/
-benchmark_charts_pio.html
 
-# Sample data subset
+# Old/scratch
 claude_data/
-
-# Old extraction results (now on GCS)
 consolidated/
 consolidated_results/
 configs/
+final_results_*/
+scores/
 

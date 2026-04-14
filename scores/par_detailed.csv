@@ -1,8 +1,0 @@
-parser,model,overall
-marker,claude-sonnet-4-6,0.9744
-marker,gpt-4.1,0.9698
-marker,claude-haiku-4-5,0.9660
-marker,gpt-4.1-mini,0.9618
-marker,gemini-2.5-flash,0.9548
-marker,llama-v3p3-70b-instruct,0.9373
-marker,deepseek-chat,0.2488

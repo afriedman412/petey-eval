@@ -74,6 +74,15 @@ DATASETS = {
 }
 
 
+def _gcs_client():
+    """Get a GCS client (lazy import)."""
+    try:
+        from google.cloud import storage
+        return storage.Client()
+    except ImportError:
+        return None
+
+
 def _ensure_pdfs(dataset: str) -> Path:
     """Download PDFs from GCS if not cached locally. Returns local dir."""
     ds = DATASETS[dataset]
@@ -83,21 +92,46 @@ def _ensure_pdfs(dataset: str) -> Path:
     local_dir.mkdir(parents=True, exist_ok=True)
     gcs_src = ds["pdf_gcs"]
     print(f"  Downloading PDFs: {gcs_src} → {local_dir}/")
-    subprocess.run(
-        ["gcloud", "storage", "cp", f"{gcs_src}*", str(local_dir) + "/"],
-        check=True,
-    )
-    n = len(list(local_dir.glob(ds["pdf_glob"])))
-    print(f"  Downloaded {n} files")
+
+    # Try Python client first, fall back to gcloud CLI
+    client = _gcs_client()
+    if client:
+        bucket_name = GCS_BUCKET.replace("gs://", "").rstrip("/")
+        prefix = gcs_src.replace(f"gs://{bucket_name}/", "")
+        bucket = client.bucket(bucket_name)
+        blobs = list(bucket.list_blobs(prefix=prefix))
+        for blob in blobs:
+            if blob.name.endswith("/"):
+                continue
+            fname = os.path.basename(blob.name)
+            blob.download_to_filename(str(local_dir / fname))
+        n = len(list(local_dir.glob(ds["pdf_glob"])))
+        print(f"  Downloaded {n} files")
+    else:
+        subprocess.run(
+            ["gcloud", "storage", "cp", f"{gcs_src}*",
+             str(local_dir) + "/"],
+            check=True,
+        )
+        n = len(list(local_dir.glob(ds["pdf_glob"])))
+        print(f"  Downloaded {n} files")
     return local_dir
 
 
 def _upload_to_gcs(local_path: Path, gcs_dest: str):
     """Upload a file to GCS."""
-    subprocess.run(
-        ["gcloud", "storage", "cp", str(local_path), gcs_dest],
-        check=True,
-    )
+    client = _gcs_client()
+    if client:
+        bucket_name = GCS_BUCKET.replace("gs://", "").rstrip("/")
+        blob_path = gcs_dest.replace(f"gs://{bucket_name}/", "")
+        bucket = client.bucket(bucket_name)
+        blob = bucket.blob(blob_path)
+        blob.upload_from_filename(str(local_path))
+    else:
+        subprocess.run(
+            ["gcloud", "storage", "cp", str(local_path), gcs_dest],
+            check=True,
+        )
 
 # ---------------------------------------------------------------------------
 # Model and parser lists
@@ -135,6 +169,37 @@ def safe_name(s):
     return MODEL_NAMES.get(s, PARSER_NAMES.get(s, s)).replace("/", "-")
 
 
+# Auth/quota error patterns
+_AUTH_PATTERNS = [
+    "invalid api key", "invalid x-api-key", "incorrect api key",
+    "authentication", "unauthorized", "forbidden",
+    "quota", "rate limit", "exceeded", "insufficient",
+    "no credits", "billing", "payment required",
+    "does not exist or you do not have access",
+]
+
+
+def _is_auth_error(error_str: str) -> bool:
+    """Check if an error string indicates an auth or quota problem."""
+    lower = error_str.lower()
+    return any(p in lower for p in _AUTH_PATTERNS)
+
+
+def _check_batch_auth(results: list[dict]) -> str | None:
+    """If most results failed with auth/quota errors, return the error.
+
+    Returns the error message if >=80% of results have the same auth
+    error, None otherwise.
+    """
+    errors = [r["_error"] for r in results if r.get("_error")]
+    if not errors:
+        return None
+    auth_errors = [e for e in errors if _is_auth_error(e)]
+    if len(auth_errors) >= len(results) * 0.8:
+        return auth_errors[0]
+    return None
+
+
 # ---------------------------------------------------------------------------
 # Extraction
 # ---------------------------------------------------------------------------
@@ -147,8 +212,11 @@ async def extract_dataset(
     model: str,
     parser: str,
     concurrency: int = 10,
+    max_retries: int = 2,
 ) -> tuple[list[dict], dict]:
     """Run extraction and return (results, timing_info).
+
+    Failed files are retried up to max_retries times.
 
     timing_info contains:
         batch_seconds: total wall clock for the batch
@@ -181,6 +249,54 @@ async def extract_dataset(
         on_result=on_result,
         concurrency=concurrency,
     )
+
+    # Retry failed files
+    for retry in range(1, max_retries + 1):
+        failed = [r for r in results if r.get("_error")]
+        if not failed:
+            break
+        # Don't retry auth errors
+        auth_err = _check_batch_auth(results)
+        if auth_err:
+            break
+
+        # Map source_file back to path
+        path_by_name = {os.path.basename(p): p for p in pdf_files}
+        retry_paths = []
+        for r in failed:
+            p = path_by_name.get(r.get("_source_file", ""))
+            if p:
+                retry_paths.append(p)
+
+        if not retry_paths:
+            break
+
+        print(f"  ↻ Retry {retry}/{max_retries}: "
+              f"{len(retry_paths)} failed files", flush=True)
+
+        for p in retry_paths:
+            file_start_times[p] = time.time()
+
+        retry_results = await extract_batch(
+            retry_paths,
+            schema_model,
+            model=model,
+            parser=parser,
+            instructions=spec.get("instructions", ""),
+            on_result=on_result,
+            concurrency=concurrency,
+        )
+
+        # Replace failed results with retry results
+        retry_by_file = {
+            r.get("_source_file"): r for r in retry_results
+        }
+        for i, r in enumerate(results):
+            if r.get("_error") and r.get("_source_file") in retry_by_file:
+                new = retry_by_file[r["_source_file"]]
+                if not new.get("_error"):
+                    results[i] = new
+
     batch_seconds = round(time.time() - t0, 2)
 
     # Normalize dates
@@ -215,6 +331,7 @@ async def run_benchmark(
     dry_run: bool = False,
     limit: int | None = None,
     gcs: bool = False,
+    retry_errors: bool = False,
 ):
     """Run all requested benchmark permutations."""
     from petey.schema import load_schema
@@ -277,8 +394,22 @@ async def run_benchmark(
         "results": [],
     }
 
+    # Track models/parsers with auth failures to skip in future runs
+    skip_models = set()   # models with LLM auth/quota errors
+    skip_parsers = set()  # parsers with API auth/quota errors
+
     for run_idx in range(1, runs + 1):
         for combo_idx, (dataset, parser, model) in enumerate(combos, 1):
+            # Skip combos with known auth failures
+            if model in skip_models:
+                print(f"\n  ⊘ Skipping {dataset}/{parser}/{model} "
+                      f"(model auth/quota error)")
+                continue
+            if parser in skip_parsers and parser != "pymupdf":
+                print(f"\n  ⊘ Skipping {dataset}/{parser}/{model} "
+                      f"(parser auth/quota error)")
+                continue
+
             ds = DATASETS[dataset]
             pdf_dir = pdf_dirs[dataset]
             pdf_files = sorted(str(p) for p in pdf_dir.glob(ds["pdf_glob"]))
@@ -303,12 +434,34 @@ async def run_benchmark(
                     concurrency=concurrency,
                 )
 
-                # Save results
+                # Check for auth/quota errors
+                auth_err = _check_batch_auth(results)
+                if auth_err:
+                    print(f"\n  ⚠ Auth/quota error detected: {auth_err}")
+                    # Determine if it's a model or parser issue
+                    if parser == "pymupdf":
+                        # pymupdf doesn't need auth, so it's the model
+                        skip_models.add(model)
+                        print(f"  → Skipping model '{model}' "
+                              f"for remaining runs")
+                    elif "api key" in auth_err.lower() or \
+                         "x-api-key" in auth_err.lower():
+                        # Parser auth error
+                        skip_parsers.add(parser)
+                        print(f"  → Skipping parser '{parser}' "
+                              f"for remaining runs")
+                    else:
+                        skip_models.add(model)
+                        print(f"  → Skipping model '{model}' "
+                              f"for remaining runs")
+
+                # Save results (even if errors, for diagnostics)
                 ds_dir = out / dataset
                 ds_dir.mkdir(parents=True, exist_ok=True)
                 safe_model = safe_name(model)
                 safe_parser = safe_name(parser)
-                suffix = f"_run{run_idx}" if runs > 1 else ""
+                import uuid
+                suffix = f"_{uuid.uuid4().hex[:8]}"
                 fname = f"{safe_parser}_{safe_model}{suffix}.json"
                 out_path = ds_dir / fname
 
@@ -321,6 +474,7 @@ async def run_benchmark(
                         "run": run_idx,
                         "timestamp": datetime.now(timezone.utc).isoformat(),
                         "timing": timing,
+                        "auth_error": auth_err,
                     },
                     "results": results,
                 }
@@ -345,18 +499,165 @@ async def run_benchmark(
                     "file": str(out_path),
                     "records": len(results),
                     "errors": n_errors,
+                    "auth_error": auth_err,
                     "timing": timing,
                 })
 
             except Exception as e:
-                print(f"\n  ✗ FAILED: {e}")
+                err_str = str(e)
+                print(f"\n  ✗ FAILED: {err_str}")
+                if _is_auth_error(err_str):
+                    skip_models.add(model)
+                    print(f"  → Skipping model '{model}' "
+                          f"for remaining runs")
                 run_log["results"].append({
                     "dataset": dataset,
                     "parser": parser,
                     "model": model,
                     "run": run_idx,
-                    "error": str(e),
+                    "error": err_str,
                 })
+
+    # --- Retry errors from existing results ---
+    if retry_errors:
+        from petey.schema import load_schema as _ls, normalize_dates
+
+        print(f"\n{'='*70}")
+        print("  RETRY: scanning for results with errors")
+        print(f"{'='*70}")
+
+        # Download results from GCS if not local
+        if gcs:
+            for dataset in datasets:
+                ds_dir = out / dataset
+                ds_dir.mkdir(parents=True, exist_ok=True)
+                client = _gcs_client()
+                if client:
+                    bucket_name = GCS_BUCKET.replace("gs://", "")
+                    bucket = client.bucket(bucket_name)
+                    prefix = f"results/{dataset}/"
+                    for blob in bucket.list_blobs(prefix=prefix):
+                        if blob.name.endswith("/"):
+                            continue
+                        fname = os.path.basename(blob.name)
+                        local = ds_dir / fname
+                        if not local.exists():
+                            blob.download_to_filename(str(local))
+                    print(f"  Downloaded results for {dataset}")
+
+        # Scan result files
+        retry_combos = []
+        for dataset in datasets:
+            ds_dir = out / dataset
+            if not ds_dir.exists():
+                continue
+            for result_file in sorted(ds_dir.glob("*.json")):
+                if "run_log" in result_file.name:
+                    continue
+                with open(result_file) as f:
+                    data = json.load(f)
+                meta = data.get("meta", {})
+                results_list = data.get("results", [])
+                errors = [r for r in results_list if r.get("_error")]
+                if not errors:
+                    continue
+                # Don't retry auth errors
+                if _check_batch_auth(results_list):
+                    continue
+                retry_combos.append({
+                    "file": result_file,
+                    "meta": meta,
+                    "dataset": meta.get("dataset", dataset),
+                    "parser": meta.get("parser", ""),
+                    "model": meta.get("model", ""),
+                    "run": meta.get("run", 1),
+                    "all_results": results_list,
+                    "error_files": [
+                        r["_source_file"] for r in errors
+                        if r.get("_source_file")
+                    ],
+                })
+
+        if not retry_combos:
+            print("  No retryable errors found.")
+        else:
+            print(f"  Found {len(retry_combos)} result files "
+                  f"with errors")
+            for rc in retry_combos:
+                ds = DATASETS[rc["dataset"]]
+                pdf_dir = pdf_dirs.get(rc["dataset"])
+                if not pdf_dir:
+                    pdf_dir = _ensure_pdfs(rc["dataset"])
+                    pdf_dirs[rc["dataset"]] = pdf_dir
+
+                path_by_name = {
+                    os.path.basename(str(p)): str(p)
+                    for p in pdf_dir.glob(ds["pdf_glob"])
+                }
+                retry_paths = [
+                    path_by_name[f] for f in rc["error_files"]
+                    if f in path_by_name
+                ]
+                if not retry_paths:
+                    continue
+
+                schema_model, spec = _ls(ds["schema"])
+                print(f"\n  Retrying {len(retry_paths)} files: "
+                      f"{rc['dataset']}/{rc['parser']}/{rc['model']} "
+                      f"run{rc['run']}")
+
+                try:
+                    new_results, _ = await extract_dataset(
+                        retry_paths, schema_model, spec,
+                        model=rc["model"],
+                        parser=rc["parser"],
+                        concurrency=concurrency,
+                    )
+                    # Merge: replace errors with successes
+                    new_by_file = {
+                        r["_source_file"]: r for r in new_results
+                        if not r.get("_error")
+                    }
+                    fixed = 0
+                    for i, r in enumerate(rc["all_results"]):
+                        sf = r.get("_source_file", "")
+                        if r.get("_error") and sf in new_by_file:
+                            rc["all_results"][i] = new_by_file[sf]
+                            fixed += 1
+
+                    # Save updated file
+                    output = {
+                        "meta": rc["meta"],
+                        "results": rc["all_results"],
+                    }
+                    with open(rc["file"], "w") as f:
+                        json.dump(output, f, indent=2)
+
+                    remaining = sum(
+                        1 for r in rc["all_results"]
+                        if r.get("_error")
+                    )
+                    print(f"  Fixed {fixed}, "
+                          f"{remaining} errors remaining")
+                    print(f"  → {rc['file']}")
+
+                    if gcs:
+                        gcs_path = (
+                            f"{gcs_results}{rc['dataset']}/"
+                            f"{rc['file'].name}"
+                        )
+                        _upload_to_gcs(rc["file"], gcs_path)
+                        print(f"  → {gcs_path}")
+
+                except Exception as e:
+                    print(f"  ✗ Retry failed: {e}")
+
+    if skip_models or skip_parsers:
+        print(f"\n⚠ Skipped due to auth/quota errors:")
+        if skip_models:
+            print(f"  Models:  {', '.join(sorted(skip_models))}")
+        if skip_parsers:
+            print(f"  Parsers: {', '.join(sorted(skip_parsers))}")
 
     # Save run log
     out.mkdir(parents=True, exist_ok=True)
@@ -412,16 +713,16 @@ Examples:
 """,
     )
     parser.add_argument(
-        "--models", default=",".join(ALL_MODELS),
-        help=f"Comma-separated model IDs (default: all {len(ALL_MODELS)})",
+        "--models", nargs="+", default=ALL_MODELS,
+        help=f"Model IDs (default: all {len(ALL_MODELS)})",
     )
     parser.add_argument(
-        "--parsers", default=",".join(ALL_PARSERS),
-        help=f"Comma-separated parser names (default: all {len(ALL_PARSERS)})",
+        "--parsers", nargs="+", default=ALL_PARSERS,
+        help=f"Parser names (default: all {len(ALL_PARSERS)})",
     )
     parser.add_argument(
-        "--datasets", default=",".join(DATASETS.keys()),
-        help=f"Comma-separated dataset names (default: all {len(DATASETS)})",
+        "--datasets", nargs="+", default=list(DATASETS.keys()),
+        help=f"Dataset names (default: all {len(DATASETS)})",
     )
     parser.add_argument(
         "--runs", type=int, default=1,
@@ -444,21 +745,26 @@ Examples:
         help="Upload results to GCS bucket after each run",
     )
     parser.add_argument(
+        "--retry-errors", action="store_true",
+        help="Scan existing results and re-extract failed files",
+    )
+    parser.add_argument(
         "--dry-run", action="store_true",
         help="Show plan without running",
     )
     args = parser.parse_args()
 
     asyncio.run(run_benchmark(
-        models=args.models.split(","),
-        parsers=args.parsers.split(","),
-        datasets=args.datasets.split(","),
+        models=args.models,
+        parsers=args.parsers,
+        datasets=args.datasets,
         runs=args.runs,
         output_dir=args.output,
         concurrency=args.concurrency,
         dry_run=args.dry_run,
         limit=args.limit,
         gcs=args.gcs,
+        retry_errors=args.retry_errors,
     ))
 
 
