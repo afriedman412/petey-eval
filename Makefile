@@ -1,66 +1,60 @@
-VENV_NAME = venv
-VENV_PATH = $(VENV_NAME)/bin/activate
-SRC_DIR = src
-PYTHON := venv/bin/python
+VENV = venv
 SYSTEM_PYTHON ?= /Library/Frameworks/Python.framework/Versions/3.13/bin/python3
+PYTHON = $(VENV)/bin/python
+PIP = $(VENV)/bin/pip
 
-.PHONY: venv
+PROJECT = petey-dev
+REGION = us-east1
+IMAGE = us-east1-docker.pkg.dev/$(PROJECT)/petey/benchmark:latest
+JOB_NAME = petey-benchmark
+
+.PHONY: venv install clean build deploy run dry-run
 
 venv:
-ifeq ($(OS),Windows_NT)
-	$(SYSTEM_PYTHON) -m venv $(VENV_NAME)
-	. $(VENV_PATH) && pip install -r requirements.txt
-else
-	arch -arm64 $(SYSTEM_PYTHON) -m venv $(VENV_NAME)
-	. $(VENV_PATH); arch -arm64 pip install -r requirements.txt
-endif
-
-.PHONY: test
-
-test:
-	@export FLASK_ENV=test && python -m pytest tests/
-
-.PHONY: install
+	arch -arm64 $(SYSTEM_PYTHON) -m venv $(VENV)
 
 install: venv
-	. $(VENV_PATH); pip install --upgrade -r requirements.txt
+	arch -arm64 $(PIP) install -r requirements.txt
 
-.PHONY: install-dev
+# ---------- Cloud Run Job ----------
 
-install-dev: venv
-	. $(VENV_PATH); pip install --upgrade -r requirements-dev.txt
+build:
+	gcloud config set project $(PROJECT)
+	docker build --platform linux/amd64 -t $(IMAGE) .
+	docker push $(IMAGE)
 
-.PHONY: update
+deploy: build
+	gcloud config set project $(PROJECT)
+	gcloud run jobs create $(JOB_NAME) \
+		--image=$(IMAGE) \
+		--region=$(REGION) \
+		--memory=4Gi \
+		--cpu=4 \
+		--task-timeout=86400 \
+		--max-retries=0 \
+		--set-env-vars="$$(cat ../.env | grep -v '^#' | grep -v 'GOOGLE_APPLICATION_CREDENTIALS' | grep '=' | tr '\n' ',')" \
+		--args="--gcs,--runs,3,--datasets,medical,par_simple,par_detailed" \
+		2>/dev/null || \
+	gcloud run jobs update $(JOB_NAME) \
+		--image=$(IMAGE) \
+		--region=$(REGION) \
+		--memory=4Gi \
+		--cpu=4 \
+		--task-timeout=86400 \
+		--max-retries=0 \
+		--set-env-vars="$$(cat ../.env | grep -v '^#' | grep -v 'GOOGLE_APPLICATION_CREDENTIALS' | grep '=' | tr '\n' ',')" \
+		--args="--gcs,--runs,3,--datasets,medical,par_simple,par_detailed"
 
-update: venv
-	. $(VENV_PATH); pip install --upgrade -r requirements.txt
+# Run with custom args: make run ARGS="--models gpt-4.1 --datasets medical --runs 1"
+run:
+	gcloud config set project $(PROJECT)
+	gcloud run jobs execute $(JOB_NAME) \
+		--region=$(REGION) \
+		$(if $(ARGS),--args="$(ARGS)",) \
+		--wait
 
-.PHONY: clean
+dry-run:
+	$(PYTHON) benchmark.py --dry-run
 
 clean:
-	@echo "Cleaning virtual environment..."
-	@find $(VENV_NAME) -type f -exec rm -f {} +
-	@find $(VENV_NAME) -type d -empty -delete
-	@rm -rf $(VENV_NAME)
-
-check-autopep:
-	${PYTHON} -m autopep8 $(SRC_DIR)/*.py tests/*.py --in-place
-
-check-isort:
-	${PYTHON} -m isort --check-only $(SRC_DIR)  tests
-
-check-flake:
-	${PYTHON} -m flake8 $(SRC_DIR)  tests
-
-check-mypy:
-	${PYTHON} -m mypy --strict --implicit-reexport $(SRC_DIR) 
-
-lint: check-flake check-mypy check-autopep check-isort
-
-format:
-	. $(VENV_PATH);
-	${PYTHON} -m autopep8 $(SRC_DIR)/*.py tests/*.py --in-place
-	${PYTHON} -m isort $(SRC_DIR) tests
-
-guni:
-	gunicorn -w 4 -b 0.0.0.0:5000 app:app
+	rm -rf $(VENV) *.egg-info results/ .pdf_cache/

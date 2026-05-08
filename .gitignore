@@ -74,30 +74,23 @@ dmypy.json
 # ruff
 .ruff_cache/
 
-# --- petey-eval exclusions ---
+# --- petey-eval ---
 
-# Raw run results (superseded by consolidated/)
-results/
+# Cached PDFs (downloaded from GCS)
+.pdf_cache/
 
-# Large plotly export
-benchmark_charts_pio.html
+# Scored results are tracked; raw extraction JSONs are not
+results/*.json
+results/run_log_*
 
-# Sample data subset (full data in ../benchmarks/)
+# Charts (regenerated from results)
+charts/
+
+# Old/scratch
 claude_data/
+consolidated/
+consolidated_results/
+configs/
+final_results_*/
+scores/
 
-# Older consolidated copies (canonical data is in consolidated/20260330/)
-consolidated/medical/
-consolidated/par_simple/
-consolidated/par_detailed/
-consolidated/par_ocr/
-
-# One-off config files (canonical ones are un-ignored below)
-configs/*
-!configs/config_model_sweep_med.json
-!configs/config_model_sweep_par.json
-!configs/config_model_sweep_par_complex.json
-!configs/config_parser_sweep_med.json
-!configs/config_parser_sweep_par_simple.json
-!configs/config_par_simple_sweep_full.json
-!configs/config_gpt5_sweep_med.json
-!configs/config_gpt5_sweep_par_simple.json
