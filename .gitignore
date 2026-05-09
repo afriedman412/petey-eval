@@ -79,9 +79,9 @@ dmypy.json
 # Cached PDFs (downloaded from GCS)
 .pdf_cache/
 
-# Scored results are tracked; raw extraction JSONs are not
-results/*.json
-results/run_log_*
+# Results and run logs are local-only
+results/
+logs/
 
 # Charts (regenerated from results)
 charts/

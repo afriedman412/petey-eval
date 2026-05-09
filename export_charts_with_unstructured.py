@@ -57,8 +57,8 @@ MODEL_ORDER = [
     'claude-sonnet-4-6', 'claude-haiku-4-5',
     'gemini/gemini-2.5-flash', 'deepseek/deepseek-chat',
 ]
-PARSER_ORDER = ['pymupdf', 'datalab']
-PARSER_SHAPES = {'pymupdf': 'circle', 'datalab': 'diamond'}
+PARSER_ORDER = ['pymupdf', 'datalab', 'unstructured']
+PARSER_SHAPES = {'pymupdf': 'circle', 'datalab': 'diamond', 'unstructured': 'square'}
 
 LLM_PRICING = {
     'gpt-4.1-mini':            (0.40, 1.60),
@@ -73,7 +73,7 @@ LLM_PRICING = {
 }
 TOKENS_PER_PAGE = 500
 OUTPUT_RATIO = 0.2
-PARSER_COST_PER_PAGE = {'pymupdf': 0, 'datalab': 0.004}
+PARSER_COST_PER_PAGE = {'pymupdf': 0, 'datalab': 0.004, 'unstructured': 0.003}
 
 
 def dname(x): return DISPLAY.get(x, x)
@@ -395,12 +395,6 @@ def main():
     med = pd.read_csv(args.med, index_col=0)
     par = pd.read_csv(args.par, index_col=0)
     timing = pd.read_csv(args.timing)
-
-    # Filter out unstructured
-    med = med[med['_parser'] != 'unstructured']
-    par = par[par['_parser'] != 'unstructured']
-    timing = timing[timing['parser'] != 'unstructured']
-
     par_s = par[par['_dataset'] == 'par_simple']
     par_d = par[par['_dataset'] == 'par_detailed']
 

@@ -405,3 +405,71 @@ def score_all_from_gcs(datasets=None, min_clean_pct=0.5):
         result["par"] = df.dropna(axis=1, how="all")
 
     return result
+
+
+# ---------------------------------------------------------------------------
+# CLI
+# ---------------------------------------------------------------------------
+
+def _print_report(df, meta):
+    """Print a per-run report: throughput, per-field match, overall accuracy."""
+    field_cols = [
+        c for c in df.columns
+        if not c.startswith("_") and c != "source_file"
+    ]
+    parser = meta.get("parser", "?")
+    model = meta.get("model", "?")
+    dataset = meta.get("dataset", "?")
+    timing = meta.get("timing") or {}
+
+    print()
+    print("=" * 64)
+    print(f"  {dataset} × {parser} × {model}")
+    print("=" * 64)
+    if timing:
+        bs = timing.get("batch_seconds")
+        fps = timing.get("files_per_second")
+        n = timing.get("file_count")
+        if bs and n:
+            per_min = round(60 * n / bs, 1) if bs else None
+            print(f"  Throughput: {fps} files/s  "
+                  f"({per_min} files/min, {n} files in {bs}s)")
+    print(f"  Records scored: {len(df)}")
+    if len(df) > 0:
+        print(f"  Errors excluded: {int(df['_errors'].iloc[0])}")
+
+    if field_cols and len(df) > 0:
+        print("\n  Per-field match rate:")
+        for f in field_cols:
+            print(f"    {f:32s} {df[f].mean():.3f}")
+        print(f"\n  Overall accuracy: {df[field_cols].mean().mean():.3f}")
+    print()
+
+
+if __name__ == "__main__":
+    import argparse
+
+    p = argparse.ArgumentParser(
+        description="Score a single benchmark result JSON against ground "
+                    "truth and print a report."
+    )
+    p.add_argument("results_json",
+                   help="Path to result JSON from benchmark.py")
+    p.add_argument("ground_truth_csv",
+                   help="Path to ground truth CSV")
+    p.add_argument("schema_yaml",
+                   help="Path to schema YAML")
+    p.add_argument("--out",
+                   help="Optional path to save the per-doc scored CSV")
+    args = p.parse_args()
+
+    with open(args.results_json) as _f:
+        _data = json.load(_f)
+    _meta = _data.get("meta", {}) if isinstance(_data, dict) else {}
+
+    df = score_file(_data, args.ground_truth_csv, args.schema_yaml)
+    _print_report(df, _meta)
+
+    if args.out:
+        df.to_csv(args.out, index=False)
+        print(f"  Wrote: {args.out}\n")
