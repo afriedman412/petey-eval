@@ -12,6 +12,14 @@ fields:
     description: infer from pronouns if not obvious!
     values: [Male, Female, Non-binary]
 
+  date:
+    type: date
+    description: Date of the Emergency Department visit. Usually appears in the header table at the top of the document. Do NOT extract patient date of birth or other dates that may appear.
+  
+  reference_number:
+    type: string
+    description: Emergency Department visit reference ID, formatted like "ED-79963" (letters, hyphen, digits). Appears in the header table at the top of the document, often labeled "Reference" or "Visit ID".
+
   presenting_complaint_1:
     type: string
 
