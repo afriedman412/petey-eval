@@ -306,14 +306,15 @@ async def extract_dataset(
     batch_seconds = round(time.time() - t0, 2)
 
     # Table-mode top-1 flatten: schemas with `mode: table` come back as
-    # {records: [...]}. For benchmarking, take the first record and treat
-    # it as the doc-level record so the scorer (one row per source_file)
-    # works untouched. Top-N > 1 will need scorer changes.
+    # {items: [...]} (per petey/schema.py build_model). For benchmarking,
+    # take the first record and treat it as the doc-level record so the
+    # scorer (one row per source_file) works untouched. Top-N > 1 will
+    # need scorer changes.
     if spec.get("mode") == "table" or spec.get("record_type") == "array":
         for i, r in enumerate(results):
             if r.get("_error"):
                 continue
-            recs = r.get("records") or []
+            recs = r.get("items") or []
             if not recs:
                 r["_error"] = "no records extracted"
                 continue
