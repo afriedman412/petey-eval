@@ -1,0 +1,41 @@
+name: house_stock_transaction_report
+mode: table
+
+# Slim benchmark schema for House Periodic Transaction Reports.
+# Doc-level fields (member_name/state/district) are repeated in every
+# record by the extractor — fine for benchmarking. Full schema with
+# more line-item fields lives in demo_docs/.
+
+fields:
+  member_name:
+    type: string
+    description: Name of the House member filing the report. Appears at the top of the document.
+
+  state:
+    type: string
+    description: Two-letter state code or full state name for the filing member.
+
+  district:
+    type: string
+    description: Congressional district number (e.g., "12") or "At Large".
+
+  transaction_date:
+    type: date
+    description: Date when the transaction occurred (column labeled "Transaction Date" or "Tx Date"). Not the notification or filing date.
+
+  transaction_type:
+    type: enum
+    description: Single-letter transaction code. P = purchase, S = sale, "S (partial)" = partial sale, E = exchange.
+    values: ["P", "S", "S (partial)", "E"]
+
+  asset_name:
+    type: string
+    description: Full name of the security being transacted (e.g., "Apple Inc."). Capture the company name; the ticker is captured separately.
+
+  ticker_symbol:
+    type: string
+    description: Ticker symbol of the security, typically shown in parentheses after the asset name (e.g., "(AAPL)" → "AAPL"). Empty if no ticker is shown.
+
+  amount_range:
+    type: string
+    description: Dollar amount range of the transaction as it appears in the report (e.g., "$1,001 - $15,000"). Capture verbatim including dollar signs and commas.

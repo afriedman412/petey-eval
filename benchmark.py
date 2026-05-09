@@ -71,6 +71,12 @@ DATASETS = {
         "schema": DATA_DIR / "par_detailed" / "schema.yaml",
         "ground_truth": DATA_DIR / "par_detailed" / "ground_truth.csv",
     },
+    "ptr": {
+        "pdf_gcs": f"{GCS_BUCKET}/PTR/",
+        "pdf_glob": "*.pdf",
+        "schema": DATA_DIR / "ptr" / "schema.yaml",
+        "ground_truth": DATA_DIR / "ptr" / "ground_truth.csv",
+    },
 }
 
 
@@ -298,6 +304,22 @@ async def extract_dataset(
                     results[i] = new
 
     batch_seconds = round(time.time() - t0, 2)
+
+    # Table-mode top-1 flatten: schemas with `mode: table` come back as
+    # {records: [...]}. For benchmarking, take the first record and treat
+    # it as the doc-level record so the scorer (one row per source_file)
+    # works untouched. Top-N > 1 will need scorer changes.
+    if spec.get("mode") == "table" or spec.get("record_type") == "array":
+        for i, r in enumerate(results):
+            if r.get("_error"):
+                continue
+            recs = r.get("records") or []
+            if not recs:
+                r["_error"] = "no records extracted"
+                continue
+            first = dict(recs[0])
+            first["_source_file"] = r.get("_source_file", "")
+            results[i] = first
 
     # Normalize dates
     for rec in results:
